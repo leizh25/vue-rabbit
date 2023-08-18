@@ -7,7 +7,7 @@ import { findNewAPI } from "@/apis/home";
 const newList = ref([])
 const getNewList = async () => {
     let res = await findNewAPI()
-    console.log('res: ', res);
+    // console.log('res: ', res);
     newList.value = res.result
 }
 onMounted(() => getNewList())

@@ -10,3 +10,11 @@ export const getBannerAPI = () => httpInstance({ url: "/home/banner" })
  * @return {*}
  */
 export const findNewAPI = () => httpInstance({ url: '/home/new' })
+
+/**
+ * @description: 获取人气推荐
+ * @param {*}
+ * @return {*}
+ */
+export const getHotAPI = () => httpInstance({url:'home/hot'})
+

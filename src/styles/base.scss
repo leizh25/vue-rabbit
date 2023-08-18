@@ -1,0 +1,14 @@
+// $xtxColor: #27ba9b;
+
+#nprogress .bar {
+    background: #27ba9b !important; //自定义颜色
+}
+
+#nprogress .peg {
+    box-shadow: 0 0 10px #27ba9b, 0 0 5px #27ba9b;
+}
+
+#nprogress .spinner-icon {
+    border-top-color: #27ba9b;
+    border-left-color: #27ba9b;
+}

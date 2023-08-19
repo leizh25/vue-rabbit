@@ -1,6 +1,6 @@
 <script setup>
-import { ref,onMounted } from 'vue';
-import { getCategoryFilterAPI,getSubCategoryAPI } from "@/apis/category";
+import { ref, onMounted } from 'vue';
+import { getCategoryFilterAPI, getSubCategoryAPI } from "@/apis/category";
 import { useRoute } from "vue-router";
 import GoodsItem from "@/views/Home/components/GoodsItem.vue"
 //获取面包屑导航数据
@@ -17,15 +17,21 @@ onMounted(() => getCategoryData())
 //获取基础列表的数据渲染
 const goodsList = ref([])
 const reqData = ref({
-    categoryId:route.params.id,
-    page:1,
-    pageSize:20,
-    sortField:"publishTime"
+    categoryId: route.params.id,
+    page: 1,
+    pageSize: 20,
+    sortField: "publishTime"
 })
 const getGoodsList = async () => {
     let res = await getSubCategoryAPI(reqData.value)
-    console.log('res: ', res);
-    goodsList.value = res.result.items
+    // console.log('res: ', res);
+    // goodsList.value = res.result.items
+    //加载完毕 停止监听
+    if (res.result.items.length == 0) {
+        disabled.value = true
+        return
+    }
+    goodsList.value.push(...res.result.items)
 }
 onMounted(() => getGoodsList())
 
@@ -33,6 +39,15 @@ onMounted(() => getGoodsList())
 const tabChange = () => {
     // console.log("tab切换了",reqData.value.sortField);
     reqData.value.page = 1
+    getGoodsList()
+}
+
+//加载更多
+const disabled = ref(false)
+const load = () => {
+    // console.log("加载数据");
+    //获取下一页的数据
+    reqData.value.page++
     getGoodsList()
 }
 </script>
@@ -43,7 +58,8 @@ const tabChange = () => {
         <div class="bread-container">
             <el-breadcrumb separator=">">
                 <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{ path: `/category/${categoryData.parentId}` }">{{ categoryData.parentName }}</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: `/category/${categoryData.parentId}` }">{{ categoryData.parentName
+                }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ categoryData.name }}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -53,7 +69,7 @@ const tabChange = () => {
                 <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
                 <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
             </el-tabs>
-            <div class="body">
+            <div class="body" v-infinite-scroll="load" :infinite-scroll-disabled="disabled">
                 <!-- 商品列表-->
                 <GoodsItem v-for="goods in goodsList" :key="goods.id" :goods="goods"></GoodsItem>
             </div>

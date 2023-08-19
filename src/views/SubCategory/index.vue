@@ -1,17 +1,33 @@
 <script setup>
 import { ref,onMounted } from 'vue';
-import { getCategoryFilterAPI } from "@/apis/category";
+import { getCategoryFilterAPI,getSubCategoryAPI } from "@/apis/category";
 import { useRoute } from "vue-router";
+import GoodsItem from "@/views/Home/components/GoodsItem.vue"
 //获取面包屑导航数据
 const route = useRoute()
 const categoryData = ref({})
 const getCategoryData = async () => {
     let res = await getCategoryFilterAPI(route.params.id)
-    console.log('res: ', res);
+    // console.log('res: ', res);
     categoryData.value = res.result
 }
 onMounted(() => getCategoryData())
 
+
+//获取基础列表的数据渲染
+const goodsList = ref([])
+const reqData = ref({
+    categoryId:route.params.id,
+    page:1,
+    pageSize:20,
+    sortField:"publishTime"
+})
+const getGoodsList = async () => {
+    let res = await getSubCategoryAPI(reqData.value)
+    // console.log('res: ', res);
+    goodsList.value = res.result.items
+}
+onMounted(() => getGoodsList())
 </script>
 
 <template>
@@ -32,6 +48,7 @@ onMounted(() => getCategoryData())
             </el-tabs>
             <div class="body">
                 <!-- 商品列表-->
+                <GoodsItem v-for="goods in goodsList" :key="goods.id" :goods="goods"></GoodsItem>
             </div>
         </div>
     </div>

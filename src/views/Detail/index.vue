@@ -1,4 +1,5 @@
 <script setup>
+import DetailHot from "./components/DetailHot.vue"
 import { ref, onMounted } from 'vue';
 import { getDetail } from '@/apis/detail';
 import { useRoute } from "vue-router";
@@ -6,7 +7,7 @@ const route = useRoute()
 const goods = ref({})
 const getGoods = async (id = route.params.id) => {
     let res = await getDetail(id)
-    console.log('res: ', res);
+    // console.log('res: ', res);
     goods.value = res.result
 }
 onMounted(() => getGoods())
@@ -26,8 +27,10 @@ onMounted(() => getGoods())
                         手段二:v-if手动控制渲染时机, 保证只有数据存在才渲染
                         在容器元素添加 v-if="goods.details"
                      -->
-                    <el-breadcrumb-item :to="{ path: `/category/${goods.categories[1].id}` }">{{ goods.categories[1].name }}</el-breadcrumb-item>
-                    <el-breadcrumb-item :to="{ path: `/category/sub/${goods.categories[0].id}` }">{{ goods.categories[0].name }}</el-breadcrumb-item>
+                    <el-breadcrumb-item :to="{ path: `/category/${goods.categories[1].id}` }">{{ goods.categories[1].name
+                    }}</el-breadcrumb-item>
+                    <el-breadcrumb-item :to="{ path: `/category/sub/${goods.categories[0].id}` }">{{
+                        goods.categories[0].name }}</el-breadcrumb-item>
                     <el-breadcrumb-item>抓绒保暖，毛毛虫子儿童运动鞋</el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
@@ -42,22 +45,22 @@ onMounted(() => getGoods())
                             <ul class="goods-sales">
                                 <li>
                                     <p>销量人气</p>
-                                    <p> {{goods.salesCount}}+ </p>
+                                    <p> {{ goods.salesCount }}+ </p>
                                     <p><i class="iconfont icon-task-filling"></i>销量人气</p>
                                 </li>
                                 <li>
                                     <p>商品评价</p>
-                                    <p>{{goods.commentCount}}+</p>
+                                    <p>{{ goods.commentCount }}+</p>
                                     <p><i class="iconfont icon-comment-filling"></i>查看评价</p>
                                 </li>
                                 <li>
                                     <p>收藏人气</p>
-                                    <p>{{goods.collectCount}}+</p>
+                                    <p>{{ goods.collectCount }}+</p>
                                     <p><i class="iconfont icon-favorite-filling"></i>收藏商品</p>
                                 </li>
                                 <li>
                                     <p>品牌信息</p>
-                                    <p>{{goods.brand.name}}</p>
+                                    <p>{{ goods.brand.name }}</p>
                                     <p><i class="iconfont icon-dynamic-filling"></i>品牌主页</p>
                                 </li>
                             </ul>
@@ -114,13 +117,16 @@ onMounted(() => getGoods())
                                         </li>
                                     </ul>
                                     <!-- 图片 -->
-                                    <img :src="img" v-for="(img,index) in goods.details.pictures" :key="index">
+                                    <img :src="img" v-for="(img, index) in goods.details.pictures" :key="index">
                                 </div>
                             </div>
                         </div>
                         <!-- 24热榜+专题推荐 -->
                         <div class="goods-aside">
-
+                            <!-- 24小时热榜 -->
+                            <DetailHot></DetailHot>
+                            <!-- 周热榜 -->
+                            <DetailHot></DetailHot>
                         </div>
                     </div>
                 </div>

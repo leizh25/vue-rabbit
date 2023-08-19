@@ -15,6 +15,8 @@ onMounted(() => categoryStore.getCategory())
     <LayoutFixed></LayoutFixed>
     <LayoutNav />
     <LayoutHeader />
+    <!-- 第一种方案: 添加key  破坏复用机制,强制销毁重建  但是会导致某些不变的区域在重建时重新发起请求,导致资源浪费 -->
+    <!-- <router-view :key="$route.fullPath"></router-view> -->
     <router-view></router-view>
     <LayoutFooter />
 </template>

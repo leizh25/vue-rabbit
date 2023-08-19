@@ -28,10 +28,8 @@ onMounted(() => getGoods())
                         手段二:v-if手动控制渲染时机, 保证只有数据存在才渲染
                         在容器元素添加 v-if="goods.details"
                      -->
-                    <el-breadcrumb-item :to="{ path: `/category/${goods.categories[1].id}` }">{{ goods.categories[1].name
-                    }}</el-breadcrumb-item>
-                    <el-breadcrumb-item :to="{ path: `/category/sub/${goods.categories[0].id}` }">{{
-                        goods.categories[0].name }}</el-breadcrumb-item>
+                    <el-breadcrumb-item :to="{ path: `/category/${goods.categories[1].id}` }">{{ goods.categories[1].name }}</el-breadcrumb-item>
+                    <el-breadcrumb-item :to="{ path: `/category/sub/${goods.categories[0].id}` }">{{ goods.categories[0].name }}</el-breadcrumb-item>
                     <el-breadcrumb-item>抓绒保暖，毛毛虫子儿童运动鞋</el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
@@ -41,7 +39,7 @@ onMounted(() => getGoods())
                     <div class="goods-info">
                         <div class="media">
                             <!-- 图片预览区 -->
-                            <ImageView></ImageView>
+                            <ImageView :imageList="goods.mainPictures"></ImageView>
                             <!-- 统计数量 -->
                             <ul class="goods-sales">
                                 <li>

@@ -2,7 +2,15 @@ import httpInstance from "@/utils/http";
 
 
 // 获取-轮播图数据  GET/home/banner
-export const getBannerAPI = () => httpInstance({ url: "/home/banner" })
+export const getBannerAPI = (params = {}) => {
+    const {distributionSite = "1"} = params
+    return httpInstance({
+         url: "/home/banner",
+         params:{
+            distributionSite
+        } 
+        })
+}
 
 /**
  * @description: 获取新鲜好物

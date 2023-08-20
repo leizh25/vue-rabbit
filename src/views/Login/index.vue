@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 
 
 
@@ -9,7 +9,7 @@ import { reactive } from 'vue';
 const form = reactive({
     account: "",
     password: "",
-    agree:true
+    agree: true
 })
 
 //2.准备规则对象
@@ -21,17 +21,39 @@ const rules = {
         { required: true, message: "密码不能为空", trigger: "blur" },
         { min: 6, max: 14, message: "密码长度须为6-14", trigger: "change" }
     ],
-    agree:[
-        {validator:(rule,value,callback) => {
-            // console.log('value: ', value);
-            //自定义校验逻辑
-            //勾选就通过  不勾选就不通过
-            if(value) callback()
-            else callback(new Error("请勾选协议"))
+    agree: [
+        {
+            validator: (rule, value, callback) => {
+                // console.log('value: ', value);
+                //自定义校验逻辑
+                //勾选就通过  不勾选就不通过
+                if (value) callback()
+                else callback(new Error("请勾选协议"))
 
-        }}
+            }
+        }
     ]
 }
+
+//3.获取form实例做统一校验
+const formRef = ref(null)
+const doLogin = () => {
+    //调用实例方法
+    formRef.value.validate((valid) => {
+        //valid: 所有的表单都通过校验 才为true
+        // console.log('valid: ', valid);
+        //以参数为判断条件 如果通过校验, 才执行登录逻辑
+        if (valid) {
+            //TODO LOGIN
+        }
+
+
+    })
+}
+
+//1.用户名和密码 只需要通过简单的配置 (看文档的方式 - 复杂功能可以通过多个不同组件拆解)
+//2.同意协议: 自定义规则 validator:(rule,value,callback) => {}
+//3.统一校验 通过调用form实例的方法 validate -> true
 </script>
 
 <template>
@@ -55,7 +77,7 @@ const rules = {
                 </nav>
                 <div class="account-box">
                     <div class="form">
-                        <el-form label-position="right" label-width="60px" status-icon :model="form" :rules="rules">
+                        <el-form label-position="right" label-width="60px" status-icon :model="form" :rules="rules" ref="formRef">
                             <el-form-item label="账户" prop="account">
                                 <el-input v-model="form.account" />
                             </el-form-item>
@@ -67,7 +89,7 @@ const rules = {
                                     我已同意隐私条款和服务条款
                                 </el-checkbox>
                             </el-form-item>
-                            <el-button size="large" class="subBtn">点击登录</el-button>
+                            <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button>
                         </el-form>
                     </div>
                 </div>

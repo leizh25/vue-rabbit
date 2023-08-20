@@ -13,10 +13,16 @@ export const useUserStore = defineStore("user", () => {
         // console.log('res: ', res);
         userInfo.value = res.result
     }
+
+    //退出时清除用户信息
+    const clearUserInfo = () => {
+        userInfo.value = {}
+    }
     //3.以对象格式把state和 action return
     return {
         userInfo,
-        getUserInfo
+        getUserInfo,
+        clearUserInfo
     }
 }, {
     //持久化配置 存入localStorage

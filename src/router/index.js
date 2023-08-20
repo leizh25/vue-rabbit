@@ -30,7 +30,7 @@ const router = createRouter({
     },
     {
       path: "/login",
-      component: import("@/views/Login/index.vue")
+      component: () => import("@/views/Login/index.vue")
     }
   ],
   //路由行为定制

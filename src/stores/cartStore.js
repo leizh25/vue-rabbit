@@ -12,18 +12,28 @@ export const useCartStore = defineStore("cart", () => {
         //没有添加过  直接push
         //思路:通过匹配传递过来的商品对象中的skuId能不能在cartList中找到  找到了就是添加过
         const item = cartList.value.find(item => goods.skuId == item.skuId)
-        if(item){
+        if (item) {
             //找到了
-            item.count ++
-        }else{
+            item.count++
+        } else {
             cartList.value.push(goods)
         }
+    }
+    //删除购物车
+    const delCart = (skuId) => {
+        //思路1.找到要删除项的下标值 -splice   
+        // const index = cartList.value.findIndex(item => skuId == item.skuId)
+        // cartList.value.splice(index,1)
+        //思路2.使用数组的过滤方法
+        cartList.value = cartList.value.filter(item => item.skuId !== skuId)
+        
     }
 
     return {
         cartList,
-        addCart
+        addCart,
+        delCart
     }
-},{
-    persist:true
+}, {
+    persist: true
 })

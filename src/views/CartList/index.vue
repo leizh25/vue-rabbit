@@ -20,7 +20,7 @@ const singleCheck = (i, selected) => {
                 <table>
                     <thead>
                         <tr>
-                            <th width="120"><el-checkbox /></th>
+                            <th width="120"><el-checkbox :model-value="cartStore.isAll" @change="cartStore.allCheck" /></th>
                             <th width="400">商品信息</th>
                             <th width="220">单价</th>
                             <th width="180">数量</th>

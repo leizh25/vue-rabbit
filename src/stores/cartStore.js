@@ -1,7 +1,7 @@
 //封装购物车模块
 
 import { defineStore } from "pinia";
-import { ref,computed } from "vue"
+import { ref, computed } from "vue"
 export const useCartStore = defineStore("cart", () => {
     //1.定义state - cartList
     const cartList = ref([])
@@ -26,22 +26,30 @@ export const useCartStore = defineStore("cart", () => {
         // cartList.value.splice(index,1)
         //思路2.使用数组的过滤方法
         cartList.value = cartList.value.filter(item => item.skuId !== skuId)
-        
+
     }
 
     //单选功能
-    const singleCheck = (skuId,selected) => {
+    const singleCheck = (skuId, selected) => {
         //通过Skuid找到要修改的那一项  把他的selected的字段修改为传过来的selected
         const item = cartList.value.find(item => item.skuId == skuId)
         item.selected = selected
     }
+    //全选功能
+    const allCheck = (selected) => {
+        //把CartList中的每一项的selected都设置为当前的全选框状态
+        cartList.value.forEach(item=>item.selected = selected)
+    }
 
     //计算属性:
     //1.总的数量 所有项的count之和
-    const allCount = computed(() => cartList.value.reduce((a,c) => a + c.count,0))
+    const allCount = computed(() => cartList.value.reduce((a, c) => a + c.count, 0))
     //2.总价 所有项的count * price
-    const allPrice = computed(() => cartList.value.reduce((a,c) => a + c.count * c.price,0))
+    const allPrice = computed(() => cartList.value.reduce((a, c) => a + c.count * c.price, 0))
 
+
+    //是否全选
+    const isAll = computed(() => cartList.value.every(item => item.selected == true))
 
     return {
         cartList,
@@ -49,7 +57,9 @@ export const useCartStore = defineStore("cart", () => {
         delCart,
         allCount,
         allPrice,
-        singleCheck
+        singleCheck,
+        isAll,
+        allCheck
     }
 }, {
     persist: true
